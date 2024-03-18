@@ -9,12 +9,13 @@ export const LogIn = () => {
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const signUp = async (email, password) => {
+  const signIn = async (email, password) => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
+      if (data?.session) navigate("/private");
       if (error) console.error(error);
     } catch (error) {
       console.error(error);
@@ -26,7 +27,7 @@ export const LogIn = () => {
     if (!isSubmitting) {
       setIsSubmitting(true);
       try {
-        await signUp(email, password);
+        await signIn(email, password);
       } catch (error) {
         console.error(error);
       } finally {

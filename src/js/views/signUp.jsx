@@ -18,8 +18,8 @@ export const SignUp = () => {
           emailRedirectTo: import.meta.env.VITE_DOMAIN,
         },
       });
-      console.log(data);
-      console.log(error);
+      if (data?.user) alert("Verifica el correo electronico");
+      if (error) console.error(error);
     } catch (error) {
       console.error(error);
     }
