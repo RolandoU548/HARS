@@ -1,8 +1,10 @@
 import "../../css/signUp.css";
 import { supabase } from "../../supabase/supabase.js";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 export const SignUp = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -55,6 +57,13 @@ export const SignUp = () => {
         />
         <button type="submit">ENVIAR</button>
       </form>
+      <button
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        Volver
+      </button>
     </>
   );
 };

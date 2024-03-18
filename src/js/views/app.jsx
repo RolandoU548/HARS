@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import "../../css/app.css";
 
 export const App = () => {
   const [count, setCount] = useState(0);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -12,13 +14,21 @@ export const App = () => {
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        <button
+          onClick={() => {
+            navigate("/logIn");
+          }}
+        >
+          LogIn
+        </button>
+        <button
+          onClick={() => {
+            navigate("/signUp");
+          }}
+        >
+          SignUp
+        </button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   );
 };
