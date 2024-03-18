@@ -1,26 +1,13 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
-import { supabase } from "../supabase/supabase.js";
+import { Route, Routes } from "react-router-dom";
 import { ProtectedRouter } from "./components/ProtectedRouter.jsx";
 
 import { App } from "./views/app.jsx";
 import { SignUp } from "./views/signUp.jsx";
 import { LogIn } from "./views/logIn.jsx";
 import { Private } from "./views/private.jsx";
-import { useEffect } from "react";
+import { NotFound } from "./views/notFound.jsx";
 
 const Layout = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    supabase.auth.onAuthStateChange((event, session) => {
-      //   if (!session) {
-      //     navigate("/login");
-      //   } else {
-      //     navigate("/");
-      //   }
-    });
-  }, [navigate]);
-
   return (
     <Routes>
       <Route path="/" element={<App />} />
@@ -29,6 +16,7 @@ const Layout = () => {
       <Route element={<ProtectedRouter />}>
         <Route path="/private" element={<Private />} />
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

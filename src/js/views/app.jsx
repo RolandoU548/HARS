@@ -1,10 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import "../../css/app.css";
+import { supabase } from "../../supabase/supabase";
 
 export const App = () => {
   const [count, setCount] = useState(0);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (session) navigate("/private");
+    });
+  }, [navigate]);
 
   return (
     <>
