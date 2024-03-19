@@ -2,6 +2,7 @@ import "../../css/logIn.css";
 import { supabase } from "../../supabase/supabase.js";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 export const LogIn = () => {
   const navigate = useNavigate();
@@ -16,14 +17,31 @@ export const LogIn = () => {
         password,
       });
       if (data?.session) navigate("/private");
-      if (error) console.error(error);
+      if (error) {
+        alert(error);
+        console.error(error);
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
+  const signInWithGoogle = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        queryParams: {
+          access_type: "offline",
+          prompt: "consent",
+        },
+      },
+    });
+    if (error) console.error(error);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    e.target.reset();
     if (!isSubmitting) {
       setIsSubmitting(true);
       try {
@@ -41,37 +59,27 @@ export const LogIn = () => {
       <h1>LogIn</h1>
       <form onSubmit={handleSubmit}>
         <input
+          name="email"
           type="email"
+          autoComplete="email"
+          required
           onChange={(e) => {
             setEmail(e.target.value);
           }}
         />
         <input
+          name="password"
           type="password"
+          autoComplete="current-password"
+          required
           onChange={(e) => {
             setPassword(e.target.value);
           }}
         />
         <button type="submit">ENVIAR</button>
       </form>
-      <button
-        onClick={async () => {
-          const { data, error } = await supabase.auth.signInWithOAuth({
-            provider: "google",
-          });
-          console.log(data);
-          console.log(error);
-        }}
-      >
-        GOOGLE
-      </button>
-      <button
-        onClick={() => {
-          navigate("/");
-        }}
-      >
-        Volver
-      </button>
+      <button onClick={signInWithGoogle}>GOOGLE</button>
+      <Link to="/">Volver</Link>
     </>
   );
 };
