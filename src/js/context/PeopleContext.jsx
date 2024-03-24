@@ -11,12 +11,9 @@ export const PeopleContextProvider = ({ children }) => {
     try {
       let user = await supabase.auth.getUser();
       user = user.data.user;
-      const result = await supabase
-        .from("person")
-        .select()
-        .eq("userId", user.id);
-      setPeople(result.data);
-      if (result?.error) console.error(result.error);
+      const { data, error } = await supabase.from("person").select();
+      setPeople(data);
+      if (error) console.error(error);
     } catch (error) {
       console.error(error);
     }
@@ -24,16 +21,54 @@ export const PeopleContextProvider = ({ children }) => {
 
   const createPerson = async (person) => {
     try {
-      const result = await supabase.from("person").insert(person);
-      if (result?.error) console.error(result.error);
+      const { error } = await supabase.from("person").insert(person);
+      if (error) console.error(error);
       getPeople();
     } catch (error) {
       console.error(error);
     }
   };
 
+  const updatePerson = async (person) => {
+    try {
+      const { data, error } = await supabase
+        .from("person")
+        .update(person)
+        .eq("id", person.id)
+        .select();
+      if (error) console.error(error);
+      setPeople(people.map((p) => (p.id === person.id ? data[0] : p)));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const deletePerson = async (id) => {
+    try {
+      const { error } = await supabase.from("person").delete().eq("id", id);
+      if (error) console.error(error);
+      setPeople(people.filter((person) => person.id != id));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const logOut = () => {
+    supabase.auth.signOut();
+    setPeople([]);
+  };
+
   return (
-    <PeopleContext.Provider value={{ people, getPeople, createPerson }}>
+    <PeopleContext.Provider
+      value={{
+        people,
+        getPeople,
+        createPerson,
+        updatePerson,
+        deletePerson,
+        logOut,
+      }}
+    >
       {children}
     </PeopleContext.Provider>
   );

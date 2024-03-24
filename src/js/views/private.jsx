@@ -1,5 +1,4 @@
 import "../../css/private.css";
-import { supabase } from "../../supabase/supabase";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { usePeople } from "../context/usePeople.jsx";
@@ -8,7 +7,7 @@ import { PersonCard } from "../components/PersonCard.jsx";
 
 export const Private = () => {
   const navigate = useNavigate();
-  const { people, getPeople } = usePeople();
+  const { people, getPeople, logOut } = usePeople();
 
   useEffect(() => {
     getPeople();
@@ -24,7 +23,7 @@ export const Private = () => {
       <h1>Private</h1>
       <button
         onClick={() => {
-          supabase.auth.signOut();
+          logOut();
           navigate("/");
         }}
       >
@@ -32,9 +31,11 @@ export const Private = () => {
       </button>
       <Link to="/person">Person</Link>
       <div>
-        {people.map((person) => {
-          return <PersonCard person={person} key={person.id}></PersonCard>;
-        })}
+        {people.length === 0
+          ? "No hay personas"
+          : people.map((person) => {
+              return <PersonCard person={person} key={person.id}></PersonCard>;
+            })}
       </div>
     </>
   );
