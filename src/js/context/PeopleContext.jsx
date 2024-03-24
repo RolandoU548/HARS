@@ -6,6 +6,12 @@ export const PeopleContext = createContext();
 
 export const PeopleContextProvider = ({ children }) => {
   const [people, setPeople] = useState();
+  const [user, setUser] = useState();
+
+  const getUser = async () => {
+    const user = await supabase.auth.getUser();
+    setUser(user.data.user);
+  };
 
   const getPeople = async () => {
     try {
@@ -59,6 +65,8 @@ export const PeopleContextProvider = ({ children }) => {
   return (
     <PeopleContext.Provider
       value={{
+        getUser,
+        user,
         people,
         getPeople,
         createPerson,
