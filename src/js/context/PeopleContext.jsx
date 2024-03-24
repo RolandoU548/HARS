@@ -9,8 +9,6 @@ export const PeopleContextProvider = ({ children }) => {
 
   const getPeople = async () => {
     try {
-      let user = await supabase.auth.getUser();
-      user = user.data.user;
       const { data, error } = await supabase.from("person").select();
       setPeople(data);
       if (error) console.error(error);
