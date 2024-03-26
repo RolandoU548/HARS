@@ -1,4 +1,3 @@
-import "../../css/signUp.css";
 import { supabase } from "../../supabase/supabase.js";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -17,6 +16,7 @@ export const SignUp = () => {
           emailRedirectTo: import.meta.env.VITE_DOMAIN,
         },
       });
+      console.log(data);
       if (data?.user) alert("Verifica el correo electronico");
       if (error) {
         alert(error);

@@ -1,4 +1,3 @@
-import "../../css/logIn.css";
 import { supabase } from "../../supabase/supabase.js";
 import { useState } from "react";
 import { useNavigate } from "react-router";

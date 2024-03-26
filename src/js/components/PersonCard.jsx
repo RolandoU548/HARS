@@ -17,7 +17,7 @@ export const PersonCard = ({ person }) => {
       <div>{new Date(person.created_at).toLocaleDateString()}</div>
       <div>{person.first_name}</div>
       <div>{person.last_name}</div>
-      <div>{person.birthday}</div>
+      <div>{person.birthdate}</div>
       <div>{person.age}</div>
       <div>
         <button onClick={handleEdit}>EDITAR</button>
